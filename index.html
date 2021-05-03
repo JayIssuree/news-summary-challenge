@@ -3,14 +3,36 @@
         <title>News Summary Challenge</title>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
-            $( document ).ready(function() {
-                $.ajax({
-                    url: "http://news-summary-api.herokuapp.com/guardian?apiRequestUrl=http://content.guardianapis.com/search?",
-                    dataType: 'json',
-                    success: function(data){
-                        console.log(data.response.results)
-                    }
-                })
+            $(document).ready(function() {
+
+                setUpPage()
+
+                function setUpPage(){
+                    $.ajax({
+                        url: "http://news-summary-api.herokuapp.com/guardian?apiRequestUrl=http://content.guardianapis.com/search?",
+                        dataType: 'json',
+                        success: function(data){
+                            for (var i = 0; i < data.response.results.length; i++){
+                                // console.log(data.response.results)
+                                createArticle(data.response.results[i])
+                            }
+                        }
+                    })
+                }
+
+                function createArticle(article){
+                    div = document.createElement('div')
+                    header = createHeader(article)
+                    div.appendChild(header)
+                    $(div).appendTo('body')
+                }
+
+                function createHeader(article){
+                    h1 = document.createElement('h1')
+                    h1.innerHTML = article.webTitle
+                    return h1
+                }
+
             });
         </script>
     </head>

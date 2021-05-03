@@ -1,8 +1,18 @@
 <!DOCTYPE html>
     <head>
         <title>News Summary Challenge</title>
-        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-        <script src="interface.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $( document ).ready(function() {
+                $.ajax({
+                    url: "http://news-summary-api.herokuapp.com/guardian?apiRequestUrl=http://content.guardianapis.com/search?",
+                    dataType: 'json',
+                    success: function(data){
+                        console.log(data.response.results)
+                    }
+                })
+            });
+        </script>
     </head>
     <body>
 

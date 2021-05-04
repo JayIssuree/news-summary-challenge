@@ -13,7 +13,7 @@
                         dataType: 'json',
                         success: function(data){
                             for (var i = 0; i < data.response.results.length; i++){
-                                // console.log(data.response.results)
+                                console.log(data.response.results)
                                 createArticle(data.response.results[i])
                             }
                         }
@@ -28,9 +28,12 @@
                 }
 
                 function createHeader(article){
-                    h1 = document.createElement('h1')
-                    h1.innerHTML = article.webTitle
-                    return h1
+                    h2 = document.createElement('h2')
+                    link = document.createElement('a')
+                    link.setAttribute("href", article.webUrl)
+                    link.innerHTML = article.webTitle
+                    h2.appendChild(link)
+                    return h2
                 }
 
             });

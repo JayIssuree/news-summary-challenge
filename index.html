@@ -4,17 +4,17 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
             $(document).ready(function() {
-
+                var makersAPI = "http://news-summary-api.herokuapp.com/guardian?apiRequestUrl="
                 setUpPage()
 
                 function setUpPage(){
                     $.ajax({
-                        url: "http://news-summary-api.herokuapp.com/guardian?apiRequestUrl=http://content.guardianapis.com/search?",
+                        url: makersAPI + "http://content.guardianapis.com/search?",
                         dataType: 'json',
                         success: function(data){
                             for (var i = 0; i < data.response.results.length; i++){
-                                console.log(data.response.results)
                                 createArticle(data.response.results[i])
+                                getAPIData(data.response.results[i].apiUrl)
                             }
                         }
                     })
@@ -34,6 +34,20 @@
                     link.innerHTML = article.webTitle
                     h2.appendChild(link)
                     return h2
+                }
+
+                function getAPIData(string){
+                    $.ajax({
+                        url: makersAPI + removeSFromHTTPS(string) + "?show-fields=body",
+                        dataType: 'json',
+                        success: function(data){
+                            console.log(data.response.content.fields)
+                        }
+                    })
+                }
+
+                function removeSFromHTTPS(string) {
+                    return string.slice(0, 4) + string.slice(5);
                 }
 
             });

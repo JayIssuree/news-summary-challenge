@@ -14,7 +14,7 @@
                         success: function(data){
                             for (var i = 0; i < data.response.results.length; i++){
                                 createArticle(data.response.results[i])
-                                getAPIData(data.response.results[i].apiUrl)
+                                getThumbnail(data.response.results[i].apiUrl)
                             }
                         }
                     })
@@ -36,12 +36,19 @@
                     return h2
                 }
 
-                function getAPIData(string){
+                function createThumbnail(imgsrc){
+                    img = document.createElement('img')
+                    img.setAttribute('src', imgsrc)
+                    $(img).appendTo('body')
+                    return img
+                }
+
+                function getThumbnail(string){
                     $.ajax({
-                        url: makersAPI + removeSFromHTTPS(string) + "?show-fields=body",
+                        url: makersAPI + removeSFromHTTPS(string) + "?show-fields=thumbnail",
                         dataType: 'json',
                         success: function(data){
-                            console.log(data.response.content.fields)
+                            createThumbnail(data.response.content.fields.thumbnail)
                         }
                     })
                 }

@@ -13,9 +13,34 @@
                         dataType: 'json',
                         success: function(data){
                             for (var i = 0; i < data.response.results.length; i++){
-                                createArticle(data.response.results[i])
-                                getThumbnail(data.response.results[i].apiUrl)
+                                createFullArticle(data.response.results[i])
+                                // createArticle(data.response.results[i])
+                                // getThumbnail(data.response.results[i].apiUrl)
                             }
+                        }
+                    })
+                }
+
+                async function createFullArticle(apiResult){
+                    url = apiResult.apiUrl
+                    url = url.slice(0, 4) + url.slice(5);
+
+                    $.ajax({
+                        url: makersAPI + url + "?show-fields=thumbnail",
+                        dataType: 'json',
+                        success: function(data){
+                            img = document.createElement('img')
+                            img.setAttribute('src', data.response.content.fields.thumbnail)
+
+                            div = document.createElement('div')
+                            h2 = document.createElement('h2')
+                            link = document.createElement('a')
+                            link.setAttribute("href", apiResult.webUrl)
+                            link.innerHTML = apiResult.webTitle
+                            h2.appendChild(link)
+                            div.appendChild(h2)
+                            div.appendChild(img)
+                            $(div).appendTo('body')
                         }
                     })
                 }

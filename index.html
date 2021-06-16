@@ -14,8 +14,6 @@
                         success: function(data){
                             for (var i = 0; i < data.response.results.length; i++){
                                 createFullArticle(data.response.results[i])
-                                // createArticle(data.response.results[i])
-                                // getThumbnail(data.response.results[i].apiUrl)
                             }
                         }
                     })
@@ -29,58 +27,34 @@
                         url: makersAPI + url + "?show-fields=thumbnail",
                         dataType: 'json',
                         success: function(data){
-                            img = document.createElement('img')
-                            img.setAttribute('src', data.response.content.fields.thumbnail)
-
-                            div = document.createElement('div')
-                            h2 = document.createElement('h2')
-                            link = document.createElement('a')
-                            link.setAttribute("href", apiResult.webUrl)
-                            link.innerHTML = apiResult.webTitle
-                            h2.appendChild(link)
-                            div.appendChild(h2)
-                            div.appendChild(img)
-                            $(div).appendTo('body')
+                            img = createImage(data.response.content.fields.thumbnail)
+                            titleLink = createTitleLink(apiResult.webUrl, apiResult.webTitle)
+                            joinTitleAndImage(titleLink, img)
                         }
                     })
                 }
 
-                function createArticle(article){
-                    div = document.createElement('div')
-                    header = createHeader(article)
-                    div.appendChild(header)
-                    $(div).appendTo('body')
-                }
+                function createImage(src){
+                    img = document.createElement('img')
+                    img.setAttribute('src', src)
+                    return img
+                };
 
-                function createHeader(article){
+                function createTitleLink(url, title){
                     h2 = document.createElement('h2')
                     link = document.createElement('a')
-                    link.setAttribute("href", article.webUrl)
-                    link.innerHTML = article.webTitle
+                    link.setAttribute("href", url)
+                    link.innerHTML = title
                     h2.appendChild(link)
                     return h2
-                }
+                };
 
-                function createThumbnail(imgsrc){
-                    img = document.createElement('img')
-                    img.setAttribute('src', imgsrc)
-                    $(img).appendTo('body')
-                    return img
-                }
-
-                function getThumbnail(string){
-                    $.ajax({
-                        url: makersAPI + removeSFromHTTPS(string) + "?show-fields=thumbnail",
-                        dataType: 'json',
-                        success: function(data){
-                            createThumbnail(data.response.content.fields.thumbnail)
-                        }
-                    })
-                }
-
-                function removeSFromHTTPS(string) {
-                    return string.slice(0, 4) + string.slice(5);
-                }
+                function joinTitleAndImage(title, img){
+                    div = document.createElement('div')
+                    div.appendChild(title)
+                    div.appendChild(img)
+                    $(div).appendTo('body')
+                };
 
             });
         </script>
